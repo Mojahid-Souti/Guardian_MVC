@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Parkinsans:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        
+        
+        
+        body {
+            
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            background-color: #f0f2f5;
+            display: flex;
+        }
+
+        .sidebar {
+            box-shadow: 10px 10px 25px rgba(0,0,0,0.1);
+            background-color: #1a202c;
+            color: white;
+            height: 100vh;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            position: fixed;
+            z-index: 1000;
+        }
+
+        .sidebar.expanded {
+            width: 240px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            position: relative;
+        }
+
+        .sidebar .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: transform 0.8s ease;
+        }
+
+        .sidebar.collapsed .logo img {
+            margin-left: 10px;
+        }
+       
+        .logo span{
+            font-size: x-large;
+            font-family: "Audiowide", sans-serif;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: transparent;
+            background-clip: text;
+        }
+        .logo h1 {
+            transition: opacity 0.3s ease;
+            font-size: x-large;
+            font-family: "Audiowide", sans-serif;
+        }
+        .sidebar.collapsed .logo h1 {
+            opacity: 0;
+            font-size: x-large;
+            font-family: "Audiowide", sans-serif;
+        }
+        
+        .sidebar ul {
+            font-size: large;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #2d3748;
+            border-radius: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .sidebar ul li span {
+            margin-left: 15px;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed ul li span:last-child {
+            opacity: 0;
+            width: 0;
+        }
+
+        .main-wrapper {
+            margin-left: 80px;
+            width: calc(100% - 60px);
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper.shifted {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+        }
+
+        .top-rectangle {
+            height: 100px;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 5px;
+            border-radius: 12px;
+            /* Flexbox for horizontal alignment */
+            display: flex;
+            align-items: center; /* Vertically center content */
+            justify-content: space-between; /* Push title and username to edges */
+            padding: 0 20px; /* Add some padding for spacing */
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            min-height: calc(100vh - 40px);
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 20px;
+            transform: translate(50%, -50%);
+            background: white;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button.collapsed {
+            transform: translate(50%, -50%) rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar" class="sidebar expanded">
+    <button class="toggle-button" id="toggleSidebar">    </button>
+    <div class="logo">
+        <img src="/images/logo.PNG" alt="Logo" onclick="navigateTo('/Home/Index')">
+        <h1><span>G</span>UARDIAN</h1>
+    </div>
+    <div class="list">
+        <ul>
+            <li onclick="navigateTo('/Home/Index')">
+                <span>🏠</span>
+                <span>Home</span>
+            </li>
+            <li onclick="navigateTo('/User/Dashboard')">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </li>
+            <li onclick="navigateTo('/Admin/Incidents')" >
+                <span>⚠️</span>
+                <span>Incidents</span>
+            </li>
+            <li onclick="navigateTo('/User/Settings')">
+                <span>⚙️</span>
+                <span>Settings</span>
+            </li>
+       
+        </ul>
+            <ul style="position: absolute; bottom: 0; width: 100%; margin-bottom: 20px;">
+                <li onclick="navigateTo('/Authentication/Logout')">
+                    <span>🚪</span>
+                    <span>Log Out</span>
+                </li>
+            </ul>
+    
+        
+    </div>
+</div>
+
+<div id="main-wrapper" class="main-wrapper shifted">
+    <div class="top-rectangle">
+        <!-- Left: Current Page Title -->
+        <h2 style="margin: 0; font-size: 1.5rem;">@ViewData["Title"]</h2>
+
+   
+        @if(ViewBag.Name != null)
+        {
+            <p>@ViewBag.Name</p>
+        }
+        else
+        {
+            <h3 style="margin: 0; font-size: 1.2rem; color: #4a5568;">
+                Guest
+                </h3> 
+        }
+       
+    </div>
+    <div class="content-card">
+        @RenderBody()
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggleSidebar').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.getElementById('main-wrapper');
+        const isExpanded = sidebar.classList.contains('expanded');
+
+        if (isExpanded) {
+            sidebar.classList.remove('expanded');
+            sidebar.classList.add('collapsed');
+            mainWrapper.classList.remove('shifted');
+            this.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('expanded');
+            mainWrapper.classList.add('shifted');
+            this.classList.remove('collapsed');
+        }
+    });
+
+    function navigateTo(path) {
+        window.location.href = path;
+    }
+</script>
+</body>
+</html>

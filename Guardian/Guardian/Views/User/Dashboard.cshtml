@@ -1,0 +1,363 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .container {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .top-divs {
+        display: flex;
+        gap: 15px;
+    }
+    .card {
+        width: 25%;
+        height: 150px;
+        border-radius: 10px;
+        border: 1px solid lightgray; /* Light red border */
+        border-radius: 10px; /* Rounded corners */
+        background-color: #f9f9f9; /* Light gray background */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        font-family: Arial, sans-serif;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-header .icon {
+        font-size: 24px;
+        color: #ff0000; /* Red color for the shield emoji */
+    }
+
+    .card-content {
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+        margin: 5px 0;
+    }
+
+    .card-subtext {
+        font-size: 14px;
+        color: mediumseagreen; /* Red for the subtext */
+        font-weight: bold;
+    }
+
+    .card-button {
+        margin-top: auto;
+        padding: 8px 15px;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: #fff; /* White text */
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .card-button:hover {
+        background-color: #333; /* Slightly lighter black on hover */
+    }
+    
+
+    .middle-divs {
+        display: flex;
+        gap: 20px;
+    }
+
+    .middle-div {
+        flex: 1;
+        border: 0.5px solid lightgray;
+        border-radius: 10px;
+        height: 400px; /* Reduced height */
+        padding: 15px;
+        position: relative;
+    }
+
+    .middle-div h3 {
+        text-align: left;
+        padding-bottom: 20px;
+    }
+
+    .middle-div canvas {
+        position: absolute;
+        top: 60px; /* Adjust to give space for title */
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        width: calc(100% - 30px) !important;
+        height: calc(100% - 65px) !important;
+    }
+
+    .bottom-div {
+        border-radius: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        border: 0.5px solid lightgray;
+        justify-content: center;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: separate; /* Changed to separate to support rounded borders */
+        border-spacing: 0; /* Removes spacing between cells for better rounded borders */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 0.5px solid lightgray;
+        border-radius: 10px; /* Rounded border */
+        overflow: hidden; /* Ensures content stays within rounded borders */
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 10px;
+        text-align: center; /* Center content horizontally */
+        vertical-align: middle; /* Center content vertically */
+        border-bottom: 0.5px solid lightgray; /* Bottom border for rows */
+    }
+
+    .data-table thead {
+        background-color: #f0f0f0; /* Very light blue-grayish color */
+        color: #333; /* Dark text for contrast */
+        font-weight: bold;
+        border-bottom: 1px solid lightgray; /* Subtle border below header */
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none; /* Removes border for the last row */
+    }
+
+    .data-table tr:nth-child(even) {
+        background-color: #f9f9f9; /* Light gray for alternating rows */
+    }
+
+    .data-table tr:first-child th:first-child {
+        border-top-left-radius: 10px; /* Rounded top-left corner */
+    }
+
+    .data-table tr:first-child th:last-child {
+        border-top-right-radius: 10px; /* Rounded top-right corner */
+    }
+
+    .data-table tr:last-child td:first-child {
+        border-bottom-left-radius: 10px; /* Rounded bottom-left corner */
+    }
+
+    .data-table tr:last-child td:last-child {
+        border-bottom-right-radius: 10px; /* Rounded bottom-right corner */
+    }
+
+    /* Threat level colors */
+    .threat-low {
+        background-color: #d4edda; /* Light green */
+        color: #155724; /* Dark green */
+    }
+
+    .threat-medium {
+        background-color: #fff3cd; /* Light yellow */
+        color: #856404; /* Dark yellow */
+    }
+
+    .threat-high {
+        background-color: #f8d7da; /* Light red */
+        color: #721c24; /* Dark red */
+    }
+
+    .threat-critical {
+        background-color: #CBC3E3; /* Purple */
+        color: rebeccapurple; /* Dark purple */
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <!-- Top Divs -->
+    <div class="top-divs">
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">💠</span> <!-- Shield emoji -->
+                <span>Packets</span>
+            </div>
+            <div class="card-content">@(ViewBag.packetno == null ? -1 : ViewBag.packetno)</div>
+            <div class="card-subtext">+@(ViewBag.packetno == null ? -1 : ViewBag.packetno) Last hour</div>
+            <button class="card-button"> View Details </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🛡️</span> <!-- Shield emoji -->
+                <span>Attacks</span>
+            </div>
+            <div class="card-content">@(ViewBag.packetno == null ? -1 : ViewBag.packetno)</div>
+            <div class="card-subtext">+3 Last hour</div>
+            <button class="card-button">Review Logs</button>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">👤️</span> <!-- Shield emoji -->
+                <span>Intrusions</span>
+            </div>
+            <div class="card-content">10</div>
+            <div class="card-subtext">+20% This month</div>
+            <button class="card-button">prevention Logs</button>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🔰</span> <!-- Shield emoji -->
+                <span>Active Threats</span>
+            </div>
+            <div class="card-content">Low</div>
+            <div class="card-subtext"> @(ViewBag.packetno == null ? -1 : ViewBag.packetno) Threats Active</div>
+            <button class="card-button">Threat Details</button>
+        </div>
+        
+    </div>
+
+    <!-- Middle Divs (Charts) -->
+    <div class="middle-divs">
+        <div class="middle-div">
+            <p>Intrusion Detection Trends</p>
+            <canvas id="intrusionTrendChart"></canvas>
+        </div>
+        <div class="middle-div">
+            <p>Intrusion Types Distribution</p>
+            <canvas id="intrusionTypesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Bottom Div (Table) -->
+ 
+    <div class="bottom-div">
+        
+        <p> packet analysis </p>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <td>Source</td>
+                <td>Destination</td>
+                <td>Port</td>
+                <td>Info</td>
+                <td>Attack</td>
+                <td>Threat Level</td>
+            </tr>
+            </thead>
+            <tbody>
+            @if (ViewBag.packets != null)
+            {
+                @foreach (var packet in ViewBag.packets)
+                {
+                    <tr>
+                        <td>@packet.Src</td>
+                        <td>@packet.Dst</td>
+                        <td>@packet.Port</td>
+                        <td>@packet.Info</td>
+                        <td>@packet.Attack</td>
+                        <td class="
+                            @(packet.ThreatLevel == "Low" ? "threat-low" :
+                            packet.ThreatLevel == "Medium" ? "threat-medium" :
+                            packet.ThreatLevel == "High" ? "threat-high" :
+                            packet.ThreatLevel == "Critical" ? "threat-critical" : "")">
+                            @packet.ThreatLevel
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript for Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Intrusion Trends Data
+    const intrusionTrends = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.IntrusionTrends ?? new List<object>()));
+
+    if (intrusionTrends.length === 0) {
+        console.warn("No intrusion trends data available.");
+    } else {
+        const trendLabels = intrusionTrends.map(t => t.Date);
+        const detectedData = intrusionTrends.map(t => t.Detected);
+        const blockedData = intrusionTrends.map(t => t.Blocked);
+
+        const ctx = document.getElementById('intrusionTrendChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: trendLabels,
+                datasets: [
+                    {
+                        label: 'Detected',
+                        data: detectedData,
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'Blocked',
+                        data: blockedData,
+                        borderColor: 'green',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Count' } }
+                }
+            }
+        });
+    }
+
+    // Intrusion Types Data
+    const intrusionTypes = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.IntrusionTypes ?? new List<object>()));
+
+    if (intrusionTypes.length === 0) {
+        console.warn("No intrusion types data available.");
+    } else {
+        const typeLabels = intrusionTypes.map(t => t.Type);
+        const typeCounts = intrusionTypes.map(t => t.Count);
+
+        const ctx2 = document.getElementById('intrusionTypesChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: typeLabels,
+                datasets: [
+                    {
+                        label: 'Count',
+                        data: typeCounts,
+                        backgroundColor: 'blue'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Intrusion Type' } },
+                    y: { title: { display: true, text: 'Count' } }
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,157 @@
+
+@model List<Guardian.Models.Incident>
+
+@{
+    ViewData["Title"] = "Incident Management";
+    string currentFilter = ViewBag.StatusFilter as string;
+}
+<style>
+    .container{
+        padding: 30px;
+    }
+    body {
+        background-color: #f4f6f9;
+    }
+
+    form {
+        display: flex;
+        gap: 15px;
+        margin: 20px 0;
+        width: 100%;
+    }
+    
+
+    form label {
+        align-self: center;
+        color: #333;
+        font-weight: 600;
+    }
+
+    form select, form input {
+        padding: 5px;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        flex-grow: 1;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    form select:focus, form input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 4px 10px rgba(99,102,241,0.2);
+    }
+
+    form button {
+        padding: 10px 20px;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+   
+
+    form button[type="submit"] {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+    }
+
+    form button[type="submit"]:hover {
+        background: linear-gradient(to right, #feb47b,#ff7e5f);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 1px;
+        margin: 20px 0;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    table th, table td {
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+    }
+
+    table th {
+        background-color: #f8fafc;
+        color: #333;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+    
+</style>
+<div class="container"> 
+<!-- Filter Form -->
+<form method="get" action="/Admin/Incidents">
+    <label for="statusFilter">Filter by Status:</label>
+    <select name="statusFilter" id="statusFilter">
+        <option value="All" selected="@(currentFilter == "All")">All</option>
+        <option value="Open" selected="@(currentFilter == "Open")">Open</option>
+        <option value="Resolved" selected="@(currentFilter == "Resolved")">Resolved</option>
+        <option value="Escalated" selected="@(currentFilter == "Escalated")">Escalated</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<!-- Incident Table -->
+@if (Model.Any())
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Incident ID</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Comment</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var incident in Model)
+        {
+            <tr>
+                <td>@incident.IncidentId</td>
+                <td>@incident.Status</td>
+                <td>@incident.AssignedTo</td>
+                <td>@incident.Comment</td>
+                <td>
+                    <!-- Assign Form -->
+                    <form method="post" action="/Admin/Assign">
+                        <input type="hidden" name="incidentId" value="@incident.IncidentId" />
+                        <input type="text" name="assignedTo" placeholder="Assign To" required />
+                        <button type="submit">Assign</button>
+                    </form>
+
+                    <!-- Resolve Form -->
+                    <form method="post" action="/Admin/Resolve">
+                        <input type="hidden" name="incidentId" value="@incident.IncidentId" />
+                        <input type="text" name="comment" placeholder="Comment" required />
+                        <button type="submit">Resolve</button>
+                    </form>
+
+                    <!-- Delete Form -->
+                    <form method="post" action="/Admin/Delete">
+                        <input type="hidden" name="incidentId" value="@incident.IncidentId" />
+                        <button type="submit" class="delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No incidents found.</p>
+}
+</div>

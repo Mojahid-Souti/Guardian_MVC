@@ -1,0 +1,1 @@
+Dr. Abdullah allowed us to discard the whole react section and use Asp.net core solely.

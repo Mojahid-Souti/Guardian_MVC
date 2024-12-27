@@ -1,0 +1,138 @@
+@model Guardian.Models.User
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Settings";
+}
+
+<style>
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    form {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        padding: 30px;
+        transition: all 0.3s ease;
+    }
+    
+
+    form h3 {
+        color: #2d3748;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #edf2f7;
+        padding-bottom: 10px;
+        text-align: center;
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    form div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+        padding: 0;
+    }
+
+    label {
+        color: #4a5568;
+        font-weight: 600;
+        margin-bottom: 5px;
+        transition: color 0.3s ease;
+    }
+
+    input {
+        width: 97%;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #ff7e5f;
+        box-shadow: 0 0 0 3px rgba(255,126,95,0.1);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #ff6b4f, #fea86b);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="info">
+    <form method="post" action="/User/UpdateInfo">
+        <h3>Update Your Information</h3>
+        <div>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="FullName" value="@Model.FullName" required />
+        </div>
+        <div>
+            <label for="emailAddress">Email Address</label>
+            <input type="email" id="emailAddress" name="EmailAddress" value="@Model.EmailAddress" required />
+        </div>
+        @if (TempData["InfoMessage"] != null)
+        {
+            <p style="color: green"> @TempData["InfoMessage"] </p>
+        }
+        <button type="submit">Update Info</button>
+    </form>
+
+    <form method="post" action="/User/UpdatePassword">
+        <h3>Change Password</h3>
+        <div>
+            <label for="oldPassword">Old Password</label>
+            <input type="password" id="oldPassword" name="OldPassword" required />
+        </div>
+        <div>
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="NewPassword" required />
+        </div>
+        @if (TempData["PassMessage"] != null)
+        {
+            <p style="color: green"> @TempData["PassMessage"] </p>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <p style="color: red"> @TempData["Error"] </p>
+        }
+        <button type="submit">Update Password</button>
+    </form>
+    <form method="post" action="/User/DeleteAccount">
+        <button type="submit" style="background-color: red; color: white;">Delete Account</button>
+    </form>
+
+</div>

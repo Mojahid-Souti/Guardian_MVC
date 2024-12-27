@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardian", "Guardian\Guardian.csproj", "{5D26A145-928A-4460-AC0F-86E9C001A69F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D26A145-928A-4460-AC0F-86E9C001A69F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D26A145-928A-4460-AC0F-86E9C001A69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D26A145-928A-4460-AC0F-86E9C001A69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D26A145-928A-4460-AC0F-86E9C001A69F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
